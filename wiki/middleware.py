@@ -1,9 +1,8 @@
-from __future__ import absolute_import
-
 import importlib
 import threading
 
 from django.conf import settings
+from django.utils.deprecation import MiddlewareMixin
 
 # Take WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS from django settings, if settings is not configured or of
 # WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS setting is not defined then use custom middleware from django-wiki
@@ -22,7 +21,7 @@ else:
         A thread-local for storing the per-request cache.
         """
         def __init__(self):
-            super(_RequestCache, self).__init__()
+            super().__init__()
             self.data = {}
             self.request = None
 
@@ -30,7 +29,7 @@ else:
     REQUEST_CACHE = _RequestCache()
 
 
-    class RequestCache(object):
+    class RequestCache(MiddlewareMixin):
         @classmethod
         def get_request_cache(cls, name=None):
             """
